@@ -1,0 +1,8 @@
+C:\Users\Stefan\Source\repos\SN.Guards\SN.Guards\bin\Debug\netcoreapp3.1\SN.Guards.deps.json
+C:\Users\Stefan\Source\repos\SN.Guards\SN.Guards\bin\Debug\netcoreapp3.1\SN.Guards.dll
+C:\Users\Stefan\Source\repos\SN.Guards\SN.Guards\bin\Debug\netcoreapp3.1\SN.Guards.pdb
+C:\Users\Stefan\Source\repos\SN.Guards\SN.Guards\obj\Debug\netcoreapp3.1\SN.Guards.csprojAssemblyReference.cache
+C:\Users\Stefan\Source\repos\SN.Guards\SN.Guards\obj\Debug\netcoreapp3.1\SN.Guards.AssemblyInfoInputs.cache
+C:\Users\Stefan\Source\repos\SN.Guards\SN.Guards\obj\Debug\netcoreapp3.1\SN.Guards.AssemblyInfo.cs
+C:\Users\Stefan\Source\repos\SN.Guards\SN.Guards\obj\Debug\netcoreapp3.1\SN.Guards.dll
+C:\Users\Stefan\Source\repos\SN.Guards\SN.Guards\obj\Debug\netcoreapp3.1\SN.Guards.pdb
