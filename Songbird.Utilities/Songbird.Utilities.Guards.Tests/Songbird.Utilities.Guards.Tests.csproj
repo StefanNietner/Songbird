@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SN.Guards\Songbird.Utilities.Guards.csproj" />
+    <ProjectReference Include="..\Songbird.Utilities.Guards\Songbird.Utilities.Guards.csproj" />
   </ItemGroup>
 
 </Project>
