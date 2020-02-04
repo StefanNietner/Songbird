@@ -45,3 +45,5 @@ Ankh.NoLoad
 
 #Other
 .svn
+/.vs
+*/.vs
