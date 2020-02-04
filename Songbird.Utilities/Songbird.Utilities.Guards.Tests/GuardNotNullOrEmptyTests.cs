@@ -4,35 +4,39 @@ using Songbird.Utilities.Guards.Exceptions;
 
 namespace Songbird.Guards.Tests
 {
-    public class GuardNotNullTests
+    public class GuardNotNullOrEmptyTests
     {
         [Test]
         public void ShouldThrowGuardClauseViolatedExceptionIfValueIsNull()
         {
-            object nullObject = null;
-            Assert.That( () => Guard.NotNull(nullObject), 
+            string nullObject = null;
+            Assert.That( () => Guard.NotNullOrEmpty(nullObject), 
+                Throws.TypeOf<GuardClauseViolationException>());
+        }
+        [Test]
+        public void ShouldThrowGuardClauseViolatedExceptionIfValueIsEmpty()
+        {
+            Assert.That(() => Guard.NotNullOrEmpty(""),
                 Throws.TypeOf<GuardClauseViolationException>());
         }
 
         [Test]
         public void ShouldNotThrowExceptionIfValueNotNull()
         {
-            Assert.That(() => Guard.NotNull(new { }),
+            Assert.That(() => Guard.NotNullOrEmpty("Test"),
                 Throws.Nothing);
         }
         [Test]
         public void ShouldGiveMessagePointingTowardsNullValueOnViolation()
         {
-            object nullObject = null;
-            Assert.That(() => Guard.NotNull(nullObject),
+            Assert.That(() => Guard.NotNullOrEmpty(""),
                 Throws.TypeOf<GuardClauseViolationException>()
-                .With.Message.EqualTo("Guard clause violated. : Null value given."));
+                .With.Message.EqualTo("Guard clause violated. : String was NULL or empty."));
         }
         [Test]
         public void ShouldAddGivenMessageToException()
         {
-            object nullObject = null;
-            Assert.That(() => Guard.NotNull(nullObject, "That's not going to work"),
+            Assert.That(() => Guard.NotNullOrEmpty("", "That's not going to work"),
                 Throws.TypeOf<GuardClauseViolationException>()
                 .With.Message.EqualTo("Guard clause violated. : That's not going to work"));
         }
