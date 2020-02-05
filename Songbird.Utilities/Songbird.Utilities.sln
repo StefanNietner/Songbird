@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Songbird.Utilities.Guards", "Songbird.Utilities.Guards/Songbird.Utilities.Guards.csproj", "{3809BF95-DD59-437E-94A4-D3ED077ECD63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Songbird.Utilities.Guards", "Songbird.Utilities.Guards\Songbird.Utilities.Guards.csproj", "{3809BF95-DD59-437E-94A4-D3ED077ECD63}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Songbird.Utilities.Guards.Tests", "Songbird.Utilities.Guards.Tests/Songbird.Utilities.Guards.Tests.csproj", "{DEDC518F-B91F-4217-8780-A38891131C38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Songbird.Utilities.Guards.Tests", "Songbird.Utilities.Guards.Tests\Songbird.Utilities.Guards.Tests.csproj", "{DEDC518F-B91F-4217-8780-A38891131C38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentationGenerator", "DocumentationGenerator\DocumentationGenerator.csproj", "{BC587DF3-843D-4865-A0D7-D4C950D38C70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DEDC518F-B91F-4217-8780-A38891131C38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEDC518F-B91F-4217-8780-A38891131C38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEDC518F-B91F-4217-8780-A38891131C38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC587DF3-843D-4865-A0D7-D4C950D38C70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC587DF3-843D-4865-A0D7-D4C950D38C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC587DF3-843D-4865-A0D7-D4C950D38C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC587DF3-843D-4865-A0D7-D4C950D38C70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,8 +8,17 @@ namespace Songbird.Guards.Tests
 {
     public class GuardIsInRangeTests
     {
-        static List<(int, int, int)> _invalidValues = new List<(int, int, int)>() { (0, 1, 10), (10, 0, 9) };
-        static List<(int, int, int)> _validValues = new List<(int, int, int)>() { (0,0,9), (5,1,10), (9,0,9)};
+        static readonly List<(int, int, int)> _invalidValues = new List<(int, int, int)>() 
+        { 
+            (0, 1, 10), 
+            (10, 0, 9) 
+        };
+        static readonly List<(int, int, int)> _validValues = new List<(int, int, int)>() 
+        { 
+            (0,0,9), 
+            (5,1,10), 
+            (9,0,9)
+        };
         [Test]
         [TestCaseSource(nameof(_invalidValues))]
         public void ShouldThrowIfValueIs((int value, int lower, int upper) val)
@@ -27,7 +36,7 @@ namespace Songbird.Guards.Tests
         [Test]
         public void ShouldGiveMessagePointingTowardsViolation()
         {
-            Assert.That(() => Guard.IsInRange(0,1,10),
+            Assert.That(() => Guard.IsInRange(0, 1, 10),
                 Throws.TypeOf<GuardClauseViolationException>()
                 .With.Message.EqualTo("Guard clause violated. : The given value was outside the given range."));
         }

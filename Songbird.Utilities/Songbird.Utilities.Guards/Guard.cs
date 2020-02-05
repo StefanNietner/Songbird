@@ -2,21 +2,63 @@
 
 namespace Songbird.Utilities.Guards
 {
+    /// <summary>
+    /// Static class for easy to use common guard clauses
+    /// </summary>
     public static class Guard
     {
+        /// <summary>
+        /// Checks the given value against NULL and throws an <see cref="GuardClauseViolationException"/> if true. 
+        /// </summary>
+        /// <typeparam name="T">The type of the given value.</typeparam>
+        /// <param name="value">The value to be checked.</param>
+        /// <exception cref="GuardClauseViolationException">Occurs when the given <paramref name="value"/> is NULL</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public void Foo(<see cref="System.Net.Http.HttpResponseMessage"/> response)
+        /// {
+        ///     try
+        ///     {
+        ///         <see cref="Guard"/>.NotNull(response);
+        ///         //response is assured to not be null at this point.
+        ///         //so it can be processed freely
+        ///     }
+        ///     catch(<see cref="GuardClauseViolationException"/> ex)
+        ///     {
+        ///         //Errorhandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public static void NotNull<T>(T value)
         {
             NotNull(value, "Null value given.");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="message"></param>
         public static void NotNull<T>(T value, string message)
         {
             if (value is null) throw new GuardClauseViolationException(message);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         public static void NotNullOrEmpty(string value)
         {
             NotNullOrEmpty(value, "String was NULL or empty.");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="message"></param>
         public static void NotNullOrEmpty(string value, string message)
         {
             if (string.IsNullOrEmpty(value)) throw new GuardClauseViolationException(message);
@@ -37,7 +79,9 @@ namespace Songbird.Utilities.Guards
         }
         public static void IsInteger(object value, string message)
         {
+#pragma warning disable IDE0059
             IsInteger(value, message, out int retVal);
+#pragma warning restore IDE0059
         }
         public static void IsInteger(object value, out int retVal)
         {
@@ -56,11 +100,29 @@ namespace Songbird.Utilities.Guards
         {
             if(value > upper || value < lower) throw new GuardClauseViolationException(message);
         }
-        //is in range
         //is positive
         //is negative
         //is zero
         //is less than
         //is greater than
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SecondClass
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public int MyProperty { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void TestMethod()
+        {
+
+        }
     }
 }

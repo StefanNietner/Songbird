@@ -8,11 +8,22 @@ namespace Songbird.Guards.Tests
 {
     public class GuardIsIntegerTests
     {
-        static List<object> _invalidValues = new List<object>() { null, "", 1.8};
-        static List<object> _validValues = new List<object>() { 0, 42, 12.0, "24" };
-        static List<(object, int)> _validReturnValues = new List<(object input, int output)>() { 
+        static readonly List<object> _invalidValues = new List<object>() 
+        { 
+            null, 
+            "", 
+            1.8
+        };
+        static readonly List<object> _validValues = new List<object>() 
+        { 
+            0, 
+            -42, 
+            12.0, 
+            "24"
+        };
+        static readonly List<(object, int)> _validReturnValues = new List<(object input, int output)>() { 
             (0, 0),
-            (42, 42),
+            (-42, -42),
             (12.0, 12),
             ("24", 24)
         };
