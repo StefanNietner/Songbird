@@ -8,23 +8,27 @@ namespace Songbird.Utilities.Guards
     public static class Guard
     {
         /// <summary>
-        /// Checks the given value against NULL and throws an <see cref="GuardClauseViolationException"/> if true. 
+        /// Checks the given value against NULL, throwing an Exception if the given value is NULL. 
         /// </summary>
-        /// <typeparam name="T">The type of the given value.</typeparam>
-        /// <param name="value">The value to be checked.</param>
-        /// <exception cref="GuardClauseViolationException">Occurs when the given <paramref name="value"/> is NULL</exception>
+        /// <typeparam name="T">
+        /// The type of the given value.
+        /// </typeparam>
+        /// <param name="value">
+        /// The value to be checked.
+        /// </param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="value"/> is NULL</exception>
         /// <example>
         /// <code>
         /// //param coming from outside source
-        /// public void Foo(<see cref="System.Net.Http.HttpResponseMessage"/> response)
+        /// public void Foo(HttpResponseMessage response)
         /// {
         ///     try
         ///     {
-        ///         <see cref="Guard"/>.NotNull(response);
+        ///         Guard.NotNull(response);
         ///         //response is assured to not be null at this point.
         ///         //so it can be processed freely
         ///     }
-        ///     catch(<see cref="GuardClauseViolationException"/> ex)
+        ///     catch(GuardClauseViolationException ex)
         ///     {
         ///         //Errorhandling here
         ///     }
@@ -36,14 +40,48 @@ namespace Songbird.Utilities.Guards
             NotNull(value, "Null value given.");
         }
         /// <summary>
-        /// 
+        /// Checks the given value against NULL and throws an <see cref="GuardClauseViolationException"/> if true. 
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <param name="message"></param>
+        /// <typeparam name="T">The type of the given value.</typeparam>
+        /// <param name="value">The value to be checked.</param>
+        /// <param name="message">The custom error message.</param>
+        /// <exception cref="GuardClauseViolationException">Occurs when the given <paramref name="value"/> is NULL</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public void Foo(<see cref="System.Net.Http.HttpResponseMessage"/> response)
+        /// {
+        ///     try
+        ///     {
+        ///         <see cref="Guard"/>.NotNull(response, "No Response was given.");
+        ///         //response is assured to not be null at this point.
+        ///         //so it can be processed freely
+        ///     }
+        ///     catch(<see cref="GuardClauseViolationException"/> ex)
+        ///     {
+        ///         //Errorhandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public static void NotNull<T>(T value, string message)
         {
             if (value is null) throw new GuardClauseViolationException(message);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">T</typeparam>
+        /// <typeparam name="T2">T2</typeparam>
+        /// <typeparam name="T3">T3</typeparam>
+        /// <param name="t">T</param>
+        /// <param name="t3">T3</param>
+        /// <param name="s">string</param>
+        /// <param name="t2">T2</param>
+        public static void Test<T,T2,T3>(T t, T3 t3, string s, T2 t2)
+        {
+
         }
 
         /// <summary>
