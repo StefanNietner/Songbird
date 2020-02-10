@@ -57,11 +57,11 @@ namespace Songbird.Utilities.Guards
         /// {
         ///     try
         ///     {
-        ///         <see cref="Guard"/>.NotNull(response, "No Response was given.");
+        ///         Guard.NotNull(response, "No Response was given.");
         ///         //response is assured to not be null at this point.
         ///         //so it can be processed freely
         ///     }
-        ///     catch(<see cref="GuardClauseViolationException"/> ex)
+        ///     catch(GuardClauseViolationException ex)
         ///     {
         ///         //Errorhandling here
         ///     }
@@ -74,28 +74,59 @@ namespace Songbird.Utilities.Guards
         }
 
         /// <summary>
-        /// 
+        /// Checks the given string to not be NULL or an empty string
         /// </summary>
-        /// <param name="s"></param>
-        /// <returns>A test string</returns>
-        public static string Test(string s)
-        {
-            return "";
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">The string to be checked</param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="value"/> was NULL or empty.</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public static void Main(string[] args)
+        /// {
+        ///     Console.Write("Enter your name: ");
+        ///     try
+        ///     {
+        ///         string entry = Console.ReadLine();
+        ///         Guard.NotNullOrEmpty(entry);
+        ///         //from this point on it is assured that entry has a value;
+        ///     }
+        ///     catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //ErrorHandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public static void NotNullOrEmpty(string value)
         {
             NotNullOrEmpty(value, "String was NULL or empty.");
         }
+
         /// <summary>
-        /// 
+        /// Checks the given string to not be NULL or an empty string
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="message"></param>
+        /// <param name="value">The string to be checked</param>
+        /// <param name="message">The custom error message.</param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="value"/> was NULL or empty.</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public static void Main(string[] args)
+        /// {
+        ///     Console.Write("Enter your name: ");
+        ///     try
+        ///     {
+        ///         string entry = Console.ReadLine();
+        ///         Guard.NotNullOrEmpty(entry);
+        ///         //from this point on it is assured that entry has a value;
+        ///     }
+        ///     catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //ErrorHandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public static void NotNullOrEmpty(string value, string message)
         {
             if (string.IsNullOrEmpty(value)) throw new GuardClauseViolationException(message);
@@ -142,24 +173,5 @@ namespace Songbird.Utilities.Guards
         //is zero
         //is less than
         //is greater than
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class SecondClass
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public int MyProperty { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void TestMethod()
-        {
-
-        }
     }
 }

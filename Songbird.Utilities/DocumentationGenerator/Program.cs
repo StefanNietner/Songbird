@@ -15,6 +15,7 @@ namespace DocumentationGenerator
     {
         static string _documentationPath;
         static IEnumerable<IConfigurationSection> _projectPaths;
+        static string _binLocation;
 #pragma warning disable IDE0060
         static void Main(string[] args)
 #pragma warning restore IDE0060
@@ -27,8 +28,7 @@ namespace DocumentationGenerator
                 Console.WriteLine($"Beginning Process for {item.Key}");
                 ExtractDocumentation(item);
             }
-
-            Console.ReadLine();
+            Console.WriteLine($"Documentation files created in {_documentationPath}");
         }
 
         private static void ReadConfig()
@@ -41,17 +41,13 @@ namespace DocumentationGenerator
             _projectPaths = configuration.GetSection("Projects").GetChildren();
 
             _documentationPath = configuration.GetSection("DocumentationPath").Value;
+
+            _binLocation = configuration.GetSection("BinLocation").Value;
         }
 
         private static void ExtractDocumentation(IConfigurationSection configSection)
         {
-            string binPath;
-#if DEBUG
-            binPath = @"bin\Debug\netcoreapp3.1";
-#else
-            binPath = @"bin\Release\netcoreapp3.1";
-#endif
-            var filePath = Path.Combine(configSection.Value, binPath, $"{configSection.Key}.xml");
+            var filePath = Path.Combine(configSection.Value, _binLocation, $"{configSection.Key}.xml");
             if (File.Exists(filePath))
             {
                 var classes = new List<Class>();
@@ -63,7 +59,8 @@ namespace DocumentationGenerator
                 {
                     var currentClass = ExtractClass(members, type);
                     classes.Add(currentClass);
-                    Console.WriteLine(currentClass);
+                    Console.WriteLine($"Class found: {currentClass.Name}");
+                    //Console.WriteLine(currentClass);
                 }
                 foreach (var item in classes)
                 {
@@ -131,6 +128,7 @@ namespace DocumentationGenerator
             AddPropertySection(item, sb);
             AddMethodsAndCreateFile(item, classDir, sb);
             File.WriteAllText(Path.Combine(classDir, $"{item.Name.SanitizedFilename()}.md"), sb.ToString());
+            Console.WriteLine($"Created Documentation for {item.Name}");
         }
 
         private static void AddMethodsAndCreateFile(Class item, string classDir, StringBuilder sb)
@@ -143,8 +141,8 @@ namespace DocumentationGenerator
                 sb.AppendLine("|-|-|");
                 foreach (var method in item.Methods)
                 {
-                    CreateMethodDocumentationFile(classDir, method);
-                    sb.AppendLine($"[{method.Name.Replace("<", @"\<")}](Methods/{method.Name.SanitizedFilename()})|{method.Summary.Trim()}");
+                    CreateMethodDocumentationFile(classDir, method, item);
+                    sb.AppendLine($"[{method.Name.Replace("<", @"\<")}]({method.Name.SanitizedFilename()})|{method.Summary.Trim()}");
                 }
             }
         }
@@ -163,10 +161,11 @@ namespace DocumentationGenerator
             }
         }
 
-        private static void CreateMethodDocumentationFile(string classDir, Method method)
+        private static void CreateMethodDocumentationFile(string classDir, Method method, Class containingClass)
         {
             var sb = new StringBuilder();
             sb.AppendLine($"# {method.Name.Replace("<", @"\<")}");
+            sb.AppendLine($"Contained in [{containingClass.Name}]({containingClass.Name.SanitizedFilename()})");
             sb.AppendLine($"{method.Summary.Trim()}");
 
             if (!string.IsNullOrEmpty(method.Remarks))
