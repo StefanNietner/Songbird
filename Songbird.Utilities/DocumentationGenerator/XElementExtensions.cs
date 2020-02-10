@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -32,6 +33,12 @@ namespace DocumentationGenerator
 
         public static string FullValue(this XElement element)
         {
+            static string formatted(string val) => 
+                string.Join("  \r\n", val.Split("\r\n")
+                .Select(sub => sub.StartsWith("            ") ? sub.Substring(12) : sub));
+            static string Codeformatted(string val) => string.Join("  \n", val.Split("\n")
+                                                                                .Where(sub => !string.IsNullOrWhiteSpace(sub))
+                                                                                .Select(sub => sub.Substring(12)));
             var s = "";
             foreach (var node in element.Nodes())
             {
@@ -43,6 +50,10 @@ namespace DocumentationGenerator
                             s += n.Attribute("name").Value;
                         else if (n.Name == "see")
                             s += n.Attribute("cref").Value;
+                        else if (n.Name == "typeparamref")
+                            s += n.Attribute("name").Value;
+                        else if (n.Name == "code")
+                            s += "```c#\r\n" + Codeformatted(n.Value) + "\r\n```";
                     }
                 }
                 else if (node.NodeType == System.Xml.XmlNodeType.Text)
@@ -50,7 +61,7 @@ namespace DocumentationGenerator
                     s += node;
                 }
             }
-            return s;
+            return formatted(s);
         }
     }
 }

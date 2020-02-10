@@ -13,6 +13,8 @@ namespace DocumentationGenerator.Models
         public List<Parameter> Parameters { get; set; }
         public List<PossibleException> Exceptions { get; set; }
         public string Example { get; set; }
+        public string Returns { get; set; }
+        public string Remarks { get; set; }
 
         public Method()
         {
@@ -54,6 +56,16 @@ namespace DocumentationGenerator.Models
             {
                 sb.AppendLine("Example:");
                 sb.AppendLine(Example);
+            }
+            if (!string.IsNullOrEmpty(Returns))
+            {
+                sb.AppendLine("Returns:");
+                sb.AppendLine(Returns);
+            }
+            if (!string.IsNullOrEmpty(Remarks))
+            {
+                sb.AppendLine("Remarks:");
+                sb.AppendLine(Remarks);
             }
             return sb.ToString();
         }

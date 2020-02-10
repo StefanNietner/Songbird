@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Songbird.Utilities.Guards.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentationGenerator", "DocumentationGenerator\DocumentationGenerator.csproj", "{BC587DF3-843D-4865-A0D7-D4C950D38C70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Songbird.Utilities.Extensions", "Songbitd.Utilities.Extensions\Songbird.Utilities.Extensions.csproj", "{72E5F238-A7E7-443D-A0BB-993604B37435}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Songbird.Utilities.Extensions", "Songbitd.Utilities.Extensions\Songbird.Utilities.Extensions.csproj", "{72E5F238-A7E7-443D-A0BB-993604B37435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Songbird.Utilities.Extensions.Tests", "Songbird.Utilities.Extensions.Tests\Songbird.Utilities.Extensions.Tests.csproj", "{AE340A86-C5BD-4D65-A629-902CD023E0F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Songbird.Utilities.Extensions.Tests", "Songbird.Utilities.Extensions.Tests\Songbird.Utilities.Extensions.Tests.csproj", "{AE340A86-C5BD-4D65-A629-902CD023E0F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

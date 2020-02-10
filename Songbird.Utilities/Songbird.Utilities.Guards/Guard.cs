@@ -35,6 +35,10 @@ namespace Songbird.Utilities.Guards
         /// }
         /// </code>
         /// </example>
+        /// <remarks>
+        /// Some remarkable information here
+        /// maybe somethings in a second line?
+        /// </remarks>
         public static void NotNull<T>(T value)
         {
             NotNull(value, "Null value given.");
@@ -72,16 +76,11 @@ namespace Songbird.Utilities.Guards
         /// <summary>
         /// 
         /// </summary>
-        /// <typeparam name="T">T</typeparam>
-        /// <typeparam name="T2">T2</typeparam>
-        /// <typeparam name="T3">T3</typeparam>
-        /// <param name="t">T</param>
-        /// <param name="t3">T3</param>
-        /// <param name="s">string</param>
-        /// <param name="t2">T2</param>
-        public static void Test<T,T2,T3>(T t, T3 t3, string s, T2 t2)
+        /// <param name="s"></param>
+        /// <returns>A test string</returns>
+        public static string Test(string s)
         {
-
+            return "";
         }
 
         /// <summary>
