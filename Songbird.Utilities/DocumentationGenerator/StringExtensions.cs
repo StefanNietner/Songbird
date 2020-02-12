@@ -6,9 +6,12 @@ namespace DocumentationGenerator
 {
     public static class StringExtensions
     {
-        public static string SanitizedFilename(this string s)
+        public static string SanitizedFilename(this string s, bool isMethod = false)
         {
-            return s.Replace('<', '{').Replace('>', '}');
+            var retVal = s.Replace('<', '{').Replace('>', '}');
+            if (isMethod && !retVal.Contains('('))
+                retVal += "()";
+            return retVal;
         }
     }
 }

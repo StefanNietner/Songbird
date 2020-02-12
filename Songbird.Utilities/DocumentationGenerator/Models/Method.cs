@@ -70,7 +70,7 @@ namespace DocumentationGenerator.Models
             return sb.ToString();
         }
 
-        private void ReplaceTypePlaceholders()
+        public void ReplaceTypePlaceholders()
         {
             if (Name.Contains("``"))
             {

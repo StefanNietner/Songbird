@@ -21,7 +21,7 @@ namespace DocumentationGenerator
         {
             var match = true;
             var reg = new Regex(@"[.]\S+[(]");
-            match &= element.Attribute("name").Value.StartsWith($"{typeIndicator}:{type.Attribute("name").Value.Substring(2)}")
+            match &= element.Attribute("name").Value.StartsWith($"{typeIndicator}:{type.Attribute("name").Value.Substring(2)}.")
                   && !reg.Match(element.Attribute("name").Value.Substring(type.Attribute("name").Value.Length + 1)).Success;
             return match;
         }
@@ -35,7 +35,7 @@ namespace DocumentationGenerator
         {
             static string formatted(string val) => 
                 string.Join("  \r\n", val.Split("\r\n")
-                .Select(sub => sub.StartsWith("            ") ? sub.Substring(12) : sub));
+                .Select(sub => sub.StartsWith(new string(' ', 12)) ? sub.Substring(12) : sub));
             static string Codeformatted(string val) => string.Join("  \n", val.Split("\n")
                                                                                 .Where(sub => !string.IsNullOrWhiteSpace(sub))
                                                                                 .Select(sub => sub.Substring(12)));
@@ -47,11 +47,11 @@ namespace DocumentationGenerator
                     if (node is XElement n)
                     {
                         if (n.Name == "paramref")
-                            s += n.Attribute("name").Value;
+                            s += $"`{n.Attribute("name").Value}`";
                         else if (n.Name == "see")
-                            s += n.Attribute("cref").Value;
+                            s += $"`{n.Attribute("cref").Value}`";
                         else if (n.Name == "typeparamref")
-                            s += n.Attribute("name").Value;
+                            s += $"`{n.Attribute("name").Value}`";
                         else if (n.Name == "code")
                             s += "```c#\r\n" + Codeformatted(n.Value) + "\r\n```";
                     }

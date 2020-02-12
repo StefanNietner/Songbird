@@ -76,7 +76,7 @@ namespace DocumentationGenerator
 
         private static Class ExtractClass(XElement members, XElement type)
         {
-            return new Class()
+            var c = new Class()
             {
                 Name = type.Attribute("name").Value.Substring(2),
                 Summary = type.Element("summary").FullValue(),
@@ -114,6 +114,8 @@ namespace DocumentationGenerator
                                         Remarks = m.Element("remarks")?.FullValue() ?? "",
                                     }).ToList(),
             };
+            c.Methods.ForEach(m => m.ReplaceTypePlaceholders());
+            return c;
         }
 
         private static void WriteMarkdownDocumentation(Class item)
@@ -142,7 +144,7 @@ namespace DocumentationGenerator
                 foreach (var method in item.Methods)
                 {
                     CreateMethodDocumentationFile(classDir, method, item);
-                    sb.AppendLine($"[{method.Name.Replace("<", @"\<")}]({method.Name.SanitizedFilename()})|{method.Summary.Trim()}");
+                    sb.AppendLine($"[{method.Name.Replace("<", @"\<")}]({method.Name.SanitizedFilename(true)})|{method.Summary.Trim()}");
                 }
             }
         }
@@ -166,6 +168,7 @@ namespace DocumentationGenerator
             var sb = new StringBuilder();
             sb.AppendLine($"# {method.Name.Replace("<", @"\<")}");
             sb.AppendLine($"Contained in [{containingClass.Name}]({containingClass.Name.SanitizedFilename()})");
+            sb.AppendLine();
             sb.AppendLine($"{method.Summary.Trim()}");
 
             if (!string.IsNullOrEmpty(method.Remarks))
@@ -219,7 +222,7 @@ namespace DocumentationGenerator
                 sb.AppendLine($"{method.Example}");
             }
 
-            File.WriteAllText(Path.Combine(classDir, "Methods", $"{method.Name.SanitizedFilename()}.md"), sb.ToString());
+            File.WriteAllText(Path.Combine(classDir, "Methods", $"{method.Name.SanitizedFilename(true)}.md"), sb.ToString());
         }
     }
 }
