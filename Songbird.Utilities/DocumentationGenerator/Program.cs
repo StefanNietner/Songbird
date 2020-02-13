@@ -1,12 +1,10 @@
 ﻿using DocumentationGenerator.Models;
 using Microsoft.Extensions.Configuration;
-using Songbird.Utilities.Guards;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace DocumentationGenerator
@@ -86,36 +84,43 @@ namespace DocumentationGenerator
                                             Name = p.MethodOrPropertyName(type),
                                             Summary = p.Element("summary").FullValue(),
                                         }).ToList(),
+                Constructors = members.Elements().Where(xel => xel.IsConstructorOf(type)).Select(c =>
+                                    ExtractMethod(type, c)).ToList(),
                 Methods = members.Elements().Where(xel => xel.IsMethodOf(type)).Select(m =>
-                                    new Method()
-                                    {
-                                        Name = m.MethodOrPropertyName(type),
-                                        Summary = m.Element("summary").FullValue(),
-                                        TypeParameters = m.Elements("typeparam").Select(t =>
-                                            new TypeParameter()
-                                            {
-                                                Name = t.Attribute("name").Value,
-                                                Summary = t.FullValue(),
-                                            }).ToList(),
-                                        Parameters = m.Elements("param").Select(p =>
-                                            new Parameter()
-                                            {
-                                                Name = p.Attribute("name").Value,
-                                                Summary = p.FullValue(),
-                                            }).ToList(),
-                                        Exceptions = m.Elements("exception").Select(ex =>
-                                            new PossibleException()
-                                            {
-                                                CRef = ex.Attribute("cref").Value,
-                                                Summary = ex.FullValue(),
-                                            }).ToList(),
-                                        Example = m.Element("example")?.FullValue() ?? "",
-                                        Returns = m.Element("returns")?.FullValue() ?? "",
-                                        Remarks = m.Element("remarks")?.FullValue() ?? "",
-                                    }).ToList(),
+                                    ExtractMethod(type, m)).ToList(),
             };
             c.Methods.ForEach(m => m.ReplaceTypePlaceholders());
             return c;
+        }
+
+        private static Method ExtractMethod(XElement type, XElement method)
+        {
+            return new Method()
+            {
+                Name = method.MethodOrPropertyName(type),
+                Summary = method.Element("summary").FullValue(),
+                TypeParameters = method.Elements("typeparam").Select(t =>
+                    new TypeParameter()
+                    {
+                        Name = t.Attribute("name").Value,
+                        Summary = t.FullValue(),
+                    }).ToList(),
+                Parameters = method.Elements("param").Select(p =>
+                    new Parameter()
+                    {
+                        Name = p.Attribute("name").Value,
+                        Summary = p.FullValue(),
+                    }).ToList(),
+                Exceptions = method.Elements("exception").Select(ex =>
+                    new PossibleException()
+                    {
+                        CRef = ex.Attribute("cref").Value,
+                        Summary = ex.FullValue(),
+                    }).ToList(),
+                Example = method.Element("example")?.FullValue() ?? "",
+                Returns = method.Element("returns")?.FullValue() ?? "",
+                Remarks = method.Element("remarks")?.FullValue() ?? "",
+            };
         }
 
         private static void WriteMarkdownDocumentation(Class item)
@@ -127,24 +132,45 @@ namespace DocumentationGenerator
             sb.AppendLine($"# {item.Name}");
             sb.AppendLine(item.Summary.Trim());
 
+            AddConstructorSection(item, classDir, sb);
             AddPropertySection(item, sb);
             AddMethodsAndCreateFile(item, classDir, sb);
             File.WriteAllText(Path.Combine(classDir, $"{item.Name.SanitizedFilename()}.md"), sb.ToString());
             Console.WriteLine($"Created Documentation for {item.Name}");
         }
 
+        private static void AddConstructorSection(Class item, string classDir, StringBuilder sb)
+        {
+            if (item.Constructors.Any())
+            {
+                var csb = new StringBuilder();
+                csb.AppendLine($"# {item.Name.Split(".").Last()} Constructors");
+                csb.AppendLine($"Constructors of the [{item.Name}]({item.Name.SanitizedFilename()}) class.");
+
+                sb.AppendLine("## Constructors"); 
+                sb.AppendLine("|Name|Summary|");
+                sb.AppendLine("|-|-|");
+                foreach (var constructor in item.Constructors)
+                {
+                    csb.AppendLine($"## {constructor.Name.AsFormattedMarkdownMethod()}");
+                    AppendMethodDetails(constructor, csb);
+                    sb.AppendLine($"[{constructor.Name.AsFormattedMarkdownMethod()}](Constructors#{constructor.Name})|{constructor.Summary.Trim()}");
+                }
+                File.WriteAllText(Path.Combine(classDir, "Constructors.md"), csb.ToString());
+            }
+        }
+
         private static void AddMethodsAndCreateFile(Class item, string classDir, StringBuilder sb)
         {
             if (item.Methods.Any())
             {
-                Directory.CreateDirectory(Path.Combine(classDir, "Methods"));
                 sb.AppendLine($"## Methods");
                 sb.AppendLine("|Name|Summary|");
                 sb.AppendLine("|-|-|");
                 foreach (var method in item.Methods)
                 {
                     CreateMethodDocumentationFile(classDir, method, item);
-                    sb.AppendLine($"[{method.Name.Replace("<", @"\<")}]({method.Name.SanitizedFilename(true)})|{method.Summary.Trim()}");
+                    sb.AppendLine($"[{method.Name.AsFormattedMarkdownMethod()}]({method.Name.SanitizedFilename()})|{method.Summary.Trim()}");
                 }
             }
         }
@@ -166,9 +192,16 @@ namespace DocumentationGenerator
         private static void CreateMethodDocumentationFile(string classDir, Method method, Class containingClass)
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"# {method.Name.Replace("<", @"\<")}");
+            sb.AppendLine($"# {method.Name.AsFormattedMarkdownMethod()}");
             sb.AppendLine($"Contained in [{containingClass.Name}]({containingClass.Name.SanitizedFilename()})");
             sb.AppendLine();
+            AppendMethodDetails(method, sb);
+
+            File.WriteAllText(Path.Combine(classDir, $"{method.Name.SanitizedFilename()}.md"), sb.ToString());
+        }
+
+        private static void AppendMethodDetails(Method method, StringBuilder sb)
+        {
             sb.AppendLine($"{method.Summary.Trim()}");
 
             if (!string.IsNullOrEmpty(method.Remarks))
@@ -221,8 +254,6 @@ namespace DocumentationGenerator
                 sb.AppendLine($"## Example");
                 sb.AppendLine($"{method.Example}");
             }
-
-            File.WriteAllText(Path.Combine(classDir, "Methods", $"{method.Name.SanitizedFilename(true)}.md"), sb.ToString());
         }
     }
 }

@@ -22,54 +22,6 @@ namespace DocumentationGenerator.Models
             Parameters = new List<Parameter>();
             Exceptions = new List<PossibleException>();
         }
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            ReplaceTypePlaceholders();
-            sb.AppendLine(Name);
-            sb.AppendLine(Summary);
-            if (TypeParameters.Any())
-            {
-                sb.AppendLine($"Method has {TypeParameters.Count} type parameter(s):");
-                foreach (var item in TypeParameters)
-                {
-                    sb.AppendLine(item.ToString());
-                }
-            }
-            if (Parameters.Any())
-            {
-                sb.AppendLine($"Method has {Parameters.Count} parameter(s):");
-                foreach (var item in Parameters)
-                {
-                    sb.AppendLine(item.ToString());
-                }
-            }
-            if (Exceptions.Any())
-            {
-                sb.AppendLine($"Method can throw {Exceptions.Count} exception(s):");
-                foreach (var item in Exceptions)
-                {
-                    sb.AppendLine(item.ToString());
-                }
-            }
-            if (!string.IsNullOrEmpty(Example))
-            {
-                sb.AppendLine("Example:");
-                sb.AppendLine(Example);
-            }
-            if (!string.IsNullOrEmpty(Returns))
-            {
-                sb.AppendLine("Returns:");
-                sb.AppendLine(Returns);
-            }
-            if (!string.IsNullOrEmpty(Remarks))
-            {
-                sb.AppendLine("Remarks:");
-                sb.AppendLine(Remarks);
-            }
-            return sb.ToString();
-        }
-
         public void ReplaceTypePlaceholders()
         {
             if (Name.Contains("``"))

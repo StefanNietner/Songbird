@@ -40,6 +40,8 @@ namespace Songbird.Utilities.Guards
         {
             NotNull(value, "Null value given.");
         }
+
+
         /// <summary>
         /// Checks the given value against NULL and throws an <see cref="GuardClauseViolationException"/> if true. 
         /// </summary>
@@ -432,10 +434,221 @@ namespace Songbird.Utilities.Guards
         {
             if (value < 0) throw new GuardClauseViolationException(message);
         }
-        //is positive
-        //is negative
-        //is zero
-        //is less than
-        //is greater than
+
+        /// <summary>
+        /// Checks the given <paramref name="value"/> to be negative, throwing an Exception if it is not. 
+        /// </summary>
+        /// <param name="value">
+        /// The value to be checked.
+        /// </param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="value"/> is positive. 0 is considered positive.</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public static void Main(string[] args)
+        /// {
+        ///     Console.Write("Enter a negative integer: ");
+        ///     try
+        ///     {
+        ///         string entry = Console.ReadLine();
+        ///         Guard.IsInteger(value, out int value);
+        ///         Guard.IsNegative(value);
+        ///         //from this point on it is assured that age is initialized with a valid value
+        ///     }
+        ///     catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //ErrorHandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public static void IsNegative(int value)
+        {
+            IsNegative(value, "The given value was positive.");
+        }
+        /// <summary>
+        /// Checks the given <paramref name="value"/> to be negative, throwing an Exception if it is not. 
+        /// </summary>
+        /// <param name="value">
+        /// The value to be checked.
+        /// </param>
+        /// <param name="message">The given error message.</param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="value"/> is positive. 0 is considered positive.</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public static void Main(string[] args)
+        /// {
+        ///     Console.Write("Enter a negative integer: ");
+        ///     try
+        ///     {
+        ///         string entry = Console.ReadLine();
+        ///         Guard.IsInteger(value, out int value);
+        ///         Guard.IsNegative(value, "Please enter a negative value.");
+        ///         //from this point on it is assured that age is initialized with a valid value
+        ///     }
+        ///     catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //ErrorHandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public static void IsNegative(int value, string message)
+        {
+            if (value >= 0) throw new GuardClauseViolationException(message);
+        }
+
+        /// <summary>
+        /// Checks the given <paramref name="value"/> to be less than the given <paramref name="limit"/>, throwing an Exception if it is not. 
+        /// </summary>
+        /// <param name="value">
+        /// The value to be checked.
+        /// </param>
+        /// <param name="limit">The limit to be checked against.</param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="value"/> is greater or equal to <paramref name="limit"/>.</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public static void Main(string[] args)
+        /// {
+        ///     Console.Write("Enter a number below 5: ");
+        ///     try
+        ///     {
+        ///         string entry = Console.ReadLine();
+        ///         Guard.IsInteger(value, out int value);
+        ///         Guard.IsLessThan(value, 5);
+        ///         //from this point on it is assured that age is initialized with a valid value
+        ///     }
+        ///     catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //ErrorHandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public static void IsLessThan(int value, int limit)
+        {
+            IsLessThan(value, limit, "The given value was greater or equal to the given limit.");
+        }
+        /// <summary>
+        /// Checks the given <paramref name="value"/> to be less than the given <paramref name="limit"/>, throwing an Exception if it is not. 
+        /// </summary>
+        /// <param name="value">
+        /// The value to be checked.
+        /// </param>
+        /// <param name="limit">The limit to be checked against.</param>
+        /// <param name="message">The given error message.</param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="value"/> is greater or equal to <paramref name="limit"/>.</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public static void Main(string[] args)
+        /// {
+        ///     Console.Write("Enter a number below 5: ");
+        ///     try
+        ///     {
+        ///         string entry = Console.ReadLine();
+        ///         Guard.IsInteger(value, out int value);
+        ///         Guard.IsLessThan(value, 5, "Please enter a valid value.");
+        ///         //from this point on it is assured that age is initialized with a valid value
+        ///     }
+        ///     catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //ErrorHandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public static void IsLessThan(int value, int limit, string message)
+        {
+            if(value >= limit) throw new GuardClauseViolationException(message);
+        }
+        /// <summary>
+        /// Checks the given <paramref name="value"/> to be greater than the given <paramref name="limit"/>, throwing an Exception if it is not. 
+        /// </summary>
+        /// <param name="value">
+        /// The value to be checked.
+        /// </param>
+        /// <param name="limit">The limit to be checked against.</param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="value"/> is less or equal to <paramref name="limit"/>.</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public static void Main(string[] args)
+        /// {
+        ///     Console.Write("Enter a number above 5: ");
+        ///     try
+        ///     {
+        ///         string entry = Console.ReadLine();
+        ///         Guard.IsInteger(value, out int value);
+        ///         Guard.IsLessThan(value, 5);
+        ///         //from this point on it is assured that age is initialized with a valid value
+        ///     }
+        ///     catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //ErrorHandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public static void IsGreaterThan(int value, int limit)
+        {
+            IsGreaterThan(value, limit, "The given value was less or equal to the given limit.");
+        }
+        /// <summary>
+        /// Checks the given <paramref name="value"/> to be greater than the given <paramref name="limit"/>, throwing an Exception if it is not. 
+        /// </summary>
+        /// <param name="value">
+        /// The value to be checked.
+        /// </param>
+        /// <param name="limit">The limit to be checked against.</param>
+        /// <param name="message">The given error message.</param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="value"/> is less or equal to <paramref name="limit"/>.</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public static void Main(string[] args)
+        /// {
+        ///     Console.Write("Enter a number above 5: ");
+        ///     try
+        ///     {
+        ///         string entry = Console.ReadLine();
+        ///         Guard.IsInteger(value, out int value);
+        ///         Guard.IsLessThan(value, 5, "Please enter a valid value.");
+        ///         //from this point on it is assured that age is initialized with a valid value
+        ///     }
+        ///     catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //ErrorHandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public static void IsGreaterThan(int value, int limit, string message)
+        {
+            if (value <= limit) throw new GuardClauseViolationException(message);
+        }
+
+        /// <summary>
+        /// Performs the specified <paramref name="check"/> on the given <paramref name="value"/>. Executing the <paramref name="onSuccess"/> function if it passes, otherwise executing the <paramref name="onFailure"/> function.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the <paramref name="value"/> to be checked.</typeparam>
+        /// <typeparam name="TResult">The return type of <paramref name="onSuccess"/> and <paramref name="onFailure"/> for further processing.</typeparam>
+        /// <param name="value">The value to check.</param>
+        /// <param name="check">The check to perform.</param>
+        /// <param name="onSuccess">The success response.</param>
+        /// <param name="onFailure">The failure response.</param>
+        /// <returns>value of type <typeparamref name="TResult"/> returned by <paramref name="onSuccess"/> and <paramref name="onFailure"/>.</returns>
+        /// <exception cref="GuardClauseViolationException"><paramref name="check"/>, <paramref name="onSuccess"/> or <paramref name="onFailure"/> is null</exception>
+        public static TResult CustomGuard<TInput, TResult>(TInput value,Func<TInput, bool> check, Func<TResult> onSuccess, Func<TResult> onFailure)
+        {
+            NotNull(check);
+            NotNull(onSuccess);
+            NotNull(onFailure);
+            if (check(value))
+                return onSuccess();
+            return onFailure();
+        }
     }
 }

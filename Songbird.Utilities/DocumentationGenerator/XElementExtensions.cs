@@ -15,8 +15,13 @@ namespace DocumentationGenerator
         }
         public static bool IsMethodOf(this XElement element, XElement type)
         {
-            return IsXOf(element, type, "M");
+            return IsXOf(element, type, "M") && !element.Attribute("name").Value.Contains("#ctor");
         }
+        public static bool IsConstructorOf(this XElement element, XElement type)
+        {
+            return IsXOf(element, type, "M") && element.Attribute("name").Value.Contains("#ctor");
+        }
+
         private static bool IsXOf(XElement element, XElement type, string typeIndicator)
         {
             var match = true;
@@ -28,7 +33,22 @@ namespace DocumentationGenerator
 
         public static string MethodOrPropertyName(this XElement element, XElement type)
         {
-            return element.Attribute("name").Value.Substring(type.Attribute("name").Value.Length + 1);
+            var methodName = element.Attribute("name").Value.Substring(type.Attribute("name").Value.Length + 1);
+            if (element.Attribute("name").Value.Contains("#ctor"))
+            {
+                var typeName = type.Attribute("name").Value.Split(".").Last();
+                string parameters = "";
+                if (methodName.Contains("("))
+                {
+                    parameters = methodName.Substring(methodName.IndexOf("("));
+                }
+                methodName = $"{typeName}{parameters}";
+            }
+            if (!methodName.Contains("("))
+            {
+                methodName += "()";
+            }
+            return methodName;
         }
 
         public static string FullValue(this XElement element)
