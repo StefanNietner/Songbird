@@ -10,7 +10,7 @@ namespace Songbird.Guards.Tests
         public void ShouldThrowGuardClauseViolatedExceptionIfValueIsNull()
         {
             string nullObject = null;
-            Assert.That( () => Guard.NotNullOrEmpty(nullObject), 
+            Assert.That( () => Guard.NotNullOrEmpty(nullObject!), 
                 Throws.TypeOf<GuardClauseViolationException>());
         }
         [Test]

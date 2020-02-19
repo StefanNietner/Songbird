@@ -641,14 +641,155 @@ namespace Songbird.Utilities.Guards
         /// <param name="onFailure">The failure response.</param>
         /// <returns>value of type <typeparamref name="TResult"/> returned by <paramref name="onSuccess"/> and <paramref name="onFailure"/>.</returns>
         /// <exception cref="GuardClauseViolationException"><paramref name="check"/>, <paramref name="onSuccess"/> or <paramref name="onFailure"/> is null</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public bool Validate(ComplexObject input)
+        /// {
+        ///     var isValid = Guard.CustomGuard(input, c=>c.IsValidState(), () => true, () => false); 
+        ///     if(isValid)
+        ///     {
+        ///         //from this point on it is assured that input is in a valid state
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public static TResult CustomGuard<TInput, TResult>(TInput value,Func<TInput, bool> check, Func<TResult> onSuccess, Func<TResult> onFailure)
         {
-            NotNull(check);
-            NotNull(onSuccess);
-            NotNull(onFailure);
+            NotNull(check, "The given check function was null.");
+            NotNull(onSuccess, "The given onSuccess function was null.");
+            NotNull(onFailure, "The given onFailure function was null.");
             if (check(value))
                 return onSuccess();
             return onFailure();
+        }
+
+        /// <summary>
+        /// Performs the specified <paramref name="check"/> on the given <paramref name="value"/>. Throwing an exception if the check fails.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the <paramref name="value"/> to be checked.</typeparam>
+        /// <param name="value">The value to check.</param>
+        /// <param name="check">The check to perform.</param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="check"/> is null or fails.</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public bool Validate(ComplexObject input)
+        /// {
+        ///     try
+        ///     {
+        ///         Guard.CustomGuard(input, c=>c.IsValidState()); 
+        ///         //from this point on it is assured that input is in a valid state
+        ///     }catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //Errorhandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public static void CustomGuard<TInput>(TInput value, Func<TInput, bool> check)
+        {
+            CustomGuard(value, check, "Custom check failed without a message.");
+        }
+        /// <summary>
+        /// Performs the specified <paramref name="check"/> on the given <paramref name="value"/>. Throwing an exception with the given <paramref name="message"/> if the check fails.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the <paramref name="value"/> to be checked.</typeparam>
+        /// <param name="value">The value to check.</param>
+        /// <param name="check">The check to perform.</param>
+        /// <param name="message">The error message.</param>
+        /// <exception cref="GuardClauseViolationException"><paramref name="check"/> is null or fails.</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public bool Validate(ComplexObject input)
+        /// {
+        ///     try
+        ///     {
+        ///         Guard.CustomGuard(input, c=>c.IsValidState(), "Input is not in a valid state."); 
+        ///         //from this point on it is assured that input is in a valid state
+        ///     }catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //Errorhandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public static void CustomGuard<TInput>(TInput value, Func<TInput, bool> check, string message)
+        {
+            NotNull(check, "The given check function was null.");
+            if (!check(value)) throw new GuardClauseViolationException(message);
+        }
+        /// <summary>
+        /// Performs the specified <paramref name="check"/> on the given <paramref name="value"/>. Executing the <paramref name="onSuccess"/> function if it passes, otherwise throwing an exception.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the <paramref name="value"/> to be checked.</typeparam>
+        /// <typeparam name="TResult">The return type of <paramref name="onSuccess"/>for further processing.</typeparam>
+        /// <param name="value">The value to check.</param>
+        /// <param name="check">The check to perform.</param>
+        /// <param name="onSuccess">The success response.</param>
+        /// <returns>value of type <typeparamref name="TResult"/> returned by <paramref name="onSuccess"/>.</returns>
+        /// <exception cref="GuardClauseViolationException"><paramref name="check"/>, <paramref name="onSuccess"/> is null</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public bool Validate(ComplexObject input)
+        /// {
+        ///     try
+        ///     {
+        ///         var isValid = Guard.CustomGuard(input, c=>c.IsValidState(), () => true); 
+        ///         if(isValid)
+        ///         {
+        ///             //from this point on it is assured that input is in a valid state
+        ///         }
+        ///     }catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //Errorhandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public static TResult CustomGuard<TInput, TResult>(TInput value, Func<TInput, bool> check, Func<TResult> onSuccess)
+        {
+            return CustomGuard(value, check, onSuccess, "Custom check failed without a message.");
+        }
+        /// <summary>
+        /// Performs the specified <paramref name="check"/> on the given <paramref name="value"/>. Executing the <paramref name="onSuccess"/> function if it passes, otherwise throwing an exception with the given <paramref name="message"/>.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the <paramref name="value"/> to be checked.</typeparam>
+        /// <typeparam name="TResult">The return type of <paramref name="onSuccess"/>for further processing.</typeparam>
+        /// <param name="value">The value to check.</param>
+        /// <param name="check">The check to perform.</param>
+        /// <param name="onSuccess">The success response.</param>
+        /// <param name="message">The error message.</param>
+        /// <returns>value of type <typeparamref name="TResult"/> returned by <paramref name="onSuccess"/>.</returns>
+        /// <exception cref="GuardClauseViolationException"><paramref name="check"/>, <paramref name="onSuccess"/> is null</exception>
+        /// <example>
+        /// <code>
+        /// //param coming from outside source
+        /// public bool Validate(ComplexObject input)
+        /// {
+        ///     try
+        ///     {
+        ///         var isValid = Guard.CustomGuard(input, c=>c.IsValidState(), () => true, "Input is not in a valid state."); 
+        ///         if(isValid)
+        ///         {
+        ///             //from this point on it is assured that input is in a valid state
+        ///         }
+        ///     }catch(GuardClauseViolationException ex)
+        ///     {
+        ///         //Errorhandling here
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        public static TResult CustomGuard<TInput, TResult>(TInput value, Func<TInput, bool> check, Func<TResult> onSuccess, string message)
+        {
+            NotNull(check, "The given check function was null.");
+            NotNull(onSuccess, "The given onSuccess function was null.");
+            if (check(value))
+                return onSuccess();
+            throw new GuardClauseViolationException(message);
         }
     }
 }

@@ -7,12 +7,21 @@ namespace Songbird.Guards.Tests
 {
     public class GuardNotNullOrWhitespaceTests
     {
-        static readonly List<string> _invalidValues = new List<string>() { null, "", " ", "\t", "\r", "\n", "\r\n" };
+        static readonly List<string> _invalidValues = new List<string>() 
+        { 
+            null, 
+            "", 
+            " ", 
+            "\t", 
+            "\r", 
+            "\n", 
+            "\r\n" 
+        };
         [Test]
-        [TestCaseSource("_invalidValues")]
+        [TestCaseSource(nameof(_invalidValues))]
         public void ShouldThrowIfValueIs(string val)
         {
-            Assert.That(() => Guard.NotNullOrWhitespace(val),
+            Assert.That(() => Guard.NotNullOrWhitespace(val!),
                 Throws.TypeOf<GuardClauseViolationException>());
         }
 

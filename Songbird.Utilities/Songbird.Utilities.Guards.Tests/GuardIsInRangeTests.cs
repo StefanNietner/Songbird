@@ -10,14 +10,14 @@ namespace Songbird.Guards.Tests
     {
         static readonly List<(int, int, int)> _invalidValues = new List<(int, int, int)>() 
         { 
-            (0, 1, 10), 
+            (0,  1, 10), 
             (10, 0, 9) 
         };
         static readonly List<(int, int, int)> _validValues = new List<(int, int, int)>() 
         { 
-            (0,0,9), 
-            (5,1,10), 
-            (9,0,9)
+            (0, 0, 9), 
+            (5, 1, 10), 
+            (9, 0, 9)
         };
         [Test]
         [TestCaseSource(nameof(_invalidValues))]

@@ -22,16 +22,16 @@ namespace Songbird.Guards.Tests
             "24"
         };
         static readonly List<(object, int)> _validReturnValues = new List<(object input, int output)>() { 
-            (0, 0),
-            (-42, -42),
-            (12.0, 12),
-            ("24", 24)
+            (0,     0),
+            (-42,   -42),
+            (12.0,  12),
+            ("24",  24)
         };
         [Test]
         [TestCaseSource(nameof(_invalidValues))]
         public void ShouldThrowIfValueIs(object val)
         {
-            Assert.That(() => Guard.IsInteger(val),
+            Assert.That(() => Guard.IsInteger(val!),
                 Throws.TypeOf<GuardClauseViolationException>());
         }
         [Test]

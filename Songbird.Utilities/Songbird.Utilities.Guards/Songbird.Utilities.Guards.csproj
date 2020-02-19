@@ -4,10 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="start /d &quot;..\DocumentationGenerator\bin\Debug\netcoreapp3.1&quot; DocumentationGenerator.exe" />
   </Target>
-
 </Project>

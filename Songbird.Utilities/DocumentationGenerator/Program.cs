@@ -17,7 +17,6 @@ namespace DocumentationGenerator
 #pragma warning disable IDE0060
         static void Main(string[] args)
 #pragma warning restore IDE0060
-
         {
             ReadConfig();
 
@@ -141,51 +140,45 @@ namespace DocumentationGenerator
 
         private static void AddConstructorSection(Class item, string classDir, StringBuilder sb)
         {
-            if (item.Constructors.Any())
-            {
-                var csb = new StringBuilder();
-                csb.AppendLine($"# {item.Name.Split(".").Last()} Constructors");
-                csb.AppendLine($"Constructors of the [{item.Name}]({item.Name.SanitizedFilename()}) class.");
+            if (!item.Constructors.Any()) return;
+            var csb = new StringBuilder();
+            csb.AppendLine($"# {item.Name.Split(".").Last()} Constructors");
+            csb.AppendLine($"Constructors of the [{item.Name}]({item.Name.SanitizedFilename()}) class.");
 
-                sb.AppendLine("## Constructors"); 
-                sb.AppendLine("|Name|Summary|");
-                sb.AppendLine("|-|-|");
-                foreach (var constructor in item.Constructors)
-                {
-                    csb.AppendLine($"## {constructor.Name.AsFormattedMarkdownMethod()}");
-                    AppendMethodDetails(constructor, csb);
-                    sb.AppendLine($"[{constructor.Name.AsFormattedMarkdownMethod()}](Constructors#{constructor.Name})|{constructor.Summary.Trim()}");
-                }
-                File.WriteAllText(Path.Combine(classDir, "Constructors.md"), csb.ToString());
+            sb.AppendLine("## Constructors");
+            sb.AppendLine("|Name|Summary|");
+            sb.AppendLine("|-|-|");
+            foreach (var constructor in item.Constructors)
+            {
+                csb.AppendLine($"## {constructor.Name.AsFormattedMarkdownMethod()}");
+                AppendMethodDetails(constructor, csb);
+                sb.AppendLine($"[{constructor.Name.AsFormattedMarkdownMethod()}](Constructors#{constructor.Name})|{constructor.Summary.Trim()}");
             }
+            File.WriteAllText(Path.Combine(classDir, "Constructors.md"), csb.ToString());
         }
 
         private static void AddMethodsAndCreateFile(Class item, string classDir, StringBuilder sb)
         {
-            if (item.Methods.Any())
+            if (!item.Methods.Any()) return;
+            sb.AppendLine($"## Methods");
+            sb.AppendLine("|Name|Summary|");
+            sb.AppendLine("|-|-|");
+            foreach (var method in item.Methods)
             {
-                sb.AppendLine($"## Methods");
-                sb.AppendLine("|Name|Summary|");
-                sb.AppendLine("|-|-|");
-                foreach (var method in item.Methods)
-                {
-                    CreateMethodDocumentationFile(classDir, method, item);
-                    sb.AppendLine($"[{method.Name.AsFormattedMarkdownMethod()}]({method.Name.SanitizedFilename()})|{method.Summary.Trim()}");
-                }
+                CreateMethodDocumentationFile(classDir, method, item);
+                sb.AppendLine($"[{method.Name.AsFormattedMarkdownMethod()}]({method.Name.SanitizedFilename()})|{method.Summary.Trim()}");
             }
         }
 
         private static void AddPropertySection(Class item, StringBuilder sb)
         {
-            if (item.Properties.Any())
+            if (!item.Properties.Any()) return;
+            sb.AppendLine($"## Properties");
+            sb.AppendLine("|Name|Summary|");
+            sb.AppendLine("|-|-|");
+            foreach (var property in item.Properties)
             {
-                sb.AppendLine($"## Properties");
-                sb.AppendLine("|Name|Summary|");
-                sb.AppendLine("|-|-|");
-                foreach (var property in item.Properties)
-                {
-                    sb.AppendLine($"{property.Name}|{property.Summary.Trim()}");
-                }
+                sb.AppendLine($"{property.Name}|{property.Summary.Trim()}");
             }
         }
 
